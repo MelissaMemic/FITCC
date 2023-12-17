@@ -9,11 +9,13 @@ late DateTime? kraj;
   late int agendaId;
   late String lokacija;
 
-  Dogadjaj(this.dogadjajId, this.naziv, this.trajanje, this.pocetak, this.kraj,
+  Dogadjaj();
+
+  Dogadjaj.full(this.dogadjajId, this.naziv, this.trajanje, this.pocetak, this.kraj,
       this.napomena, this.agendaId, this.lokacija);
 
   factory Dogadjaj.fromJson(Map<String, dynamic> map) {
-    return Dogadjaj(
+    return Dogadjaj.full(
         map['dogadjajId'],
         map['naziv'],
         map['trajanje'],

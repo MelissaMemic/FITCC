@@ -45,7 +45,7 @@ Future<void> delete(int id) async {
     }
   }
 Future<T> getById(int id, [dynamic additionalData]) async {
- // _loginService.verifySession();
+ _loginService.verifySession();
   var url = Uri.parse("$_baseUrl$_endpoint/$id");
 
   Map<String, String> headers = createHeaders();
@@ -62,7 +62,7 @@ Future<T> getById(int id, [dynamic additionalData]) async {
 
 
   Future<List<T>> get([dynamic search]) async {
-    //_loginService.verifySession();
+    _loginService.verifySession();
     var url = "$_baseUrl$_endpoint";
 
     if (search != null) {
@@ -83,7 +83,7 @@ Future<T> getById(int id, [dynamic additionalData]) async {
     }
   }
 Future<T?> insert(dynamic request) async {
-   // _loginService.verifySession();
+   _loginService.verifySession();
     var url = "$_baseUrl$_endpoint";
     var uri = Uri.parse(url);
 

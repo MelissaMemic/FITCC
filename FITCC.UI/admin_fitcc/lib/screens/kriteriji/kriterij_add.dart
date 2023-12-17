@@ -1,4 +1,5 @@
 import 'package:admin_fitcc/models/kriterij.dart';
+import 'package:admin_fitcc/providers/kriterij_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:admin_fitcc/models/kategorija.dart';
 import 'package:admin_fitcc/providers/kategorija_provider.dart';
@@ -23,7 +24,6 @@ class _KriterijAddState extends State<KriterijAdd> {
     super.initState();
     _fetchKategorijeList();
      if (widget.kriterij != null) {
-      // _getpreselectedAgenda(widget.dogadjaj!.agendaId);
       selectedKategorija = widget.kriterij!.kategorijaId.toString();
       nazivController.text = widget.kriterij!.naziv;
       vrijednostController.text = widget.kriterij!.vrijednost;
@@ -42,23 +42,25 @@ class _KriterijAddState extends State<KriterijAdd> {
     }
   }
 
-  Future<void> _insertKomisija() async {
+  Future<void> _insertKriterij() async {
     try {
-      // Implement the logic to insert the Komisija with the entered data
-      // You can access the entered values using imeController.text, prezimeController.text, etc.
-      // Make an API call to insert the Komisija
-      // For example:
-      // await KomisijaProvider().insertKomisija(Komisija(
-      //   ime: imeController.text,
-      //   prezime: prezimeController.text,
-      //   email: emailController.text,
-      //   ulogeKomisije: selectedUlogeKomisije,
-      //   kategorija: selectedKategorija,
-      // ));
-      // You may need to adjust this code based on your API and data model
+            if (widget.kriterij != null) {
+
+       await KriterijProvider().update(widget.kriterij!.kriterijId, {
+          widget.kriterij!.kriterijId,
+          nazivController.text,
+          vrijednostController.text,
+          int.parse(selectedKategorija)
+        });
+            }else{
+Kriterij insertObject=Kriterij();
+        insertObject.naziv = nazivController.text;
+      insertObject.vrijednost = vrijednostController.text;
+      insertObject.kategorijaId = int.parse(selectedKategorija);
+        await KriterijProvider().insert(insertObject);
+            }
     } catch (e) {
-      // Handle the error
-      print('Error inserting Komisija data: $e');
+      print('Error inserting Kriterij data: $e');
     }
   }
 
@@ -66,7 +68,7 @@ class _KriterijAddState extends State<KriterijAdd> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Komisija'),
+        title: Text('Add Kriterij'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -75,11 +77,11 @@ class _KriterijAddState extends State<KriterijAdd> {
           children: [
             TextField(
               controller: nazivController,
-              decoration: InputDecoration(labelText: 'Ime'),
+              decoration: InputDecoration(labelText: 'Naziv'),
             ),
             TextField(
               controller: vrijednostController,
-              decoration: InputDecoration(labelText: 'Prezime'),
+              decoration: InputDecoration(labelText: 'Vrijednost'),
             ),
             DropdownButtonFormField<String>(
               value: selectedKategorija,
@@ -99,9 +101,9 @@ class _KriterijAddState extends State<KriterijAdd> {
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
-                _insertKomisija();
+                _insertKriterij();
               },
-              child: Text('Dodaj Komisiju'),
+              child: Text('Dodaj Kriterij'),
             ),
           ],
         ),

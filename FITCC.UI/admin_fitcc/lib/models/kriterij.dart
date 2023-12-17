@@ -5,11 +5,13 @@ class Kriterij {
   late String naziv;
   late String vrijednost;
   late int kategorijaId;
-  // Assuming Kategorija is another model
-  // You can replace it with the actual type if needed
   late dynamic kategorija;
 
   Kriterij(
+    
+  );
+
+  Kriterij.full(
     this.kriterijId,
     this.naziv,
     this.vrijednost,
@@ -18,7 +20,7 @@ class Kriterij {
   );
 
   factory Kriterij.fromJson(Map<String, dynamic> map) {
-    return Kriterij(
+    return Kriterij.full(
       map['kriterijId'],
       map['naziv'],
       map['vrijednost'],

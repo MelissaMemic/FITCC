@@ -1,5 +1,5 @@
-
 import 'package:admin_fitcc/models/agenda.dart';
+import 'package:admin_fitcc/models/dogadjaj.dart';
 import 'package:admin_fitcc/models/dogadjajagenda.dart';
 import 'package:admin_fitcc/providers/agenda_provider.dart';
 import 'package:admin_fitcc/providers/dogadjaj_provider.dart';
@@ -15,9 +15,9 @@ class DogadjajAdd extends StatefulWidget {
 }
 
 class _DogadjajAddState extends State<DogadjajAdd> {
-  List<Agenda> agendaList = []; 
+  List<Agenda> agendaList = [];
   Agenda? selectedAgenda;
-   Agenda? preselectedAgenda;
+  Agenda? preselectedAgenda;
 
   TextEditingController nazivController = TextEditingController();
   TextEditingController lokacijaController = TextEditingController();
@@ -31,35 +31,38 @@ class _DogadjajAddState extends State<DogadjajAdd> {
     super.initState();
     _fetchAgendaList();
     if (widget.dogadjaj != null) {
-_getpreselectedAgenda(widget.dogadjaj!.agendaId);
+      _getpreselectedAgenda(widget.dogadjaj!.agendaId);
 
       selectedAgenda = preselectedAgenda;
       nazivController.text = widget.dogadjaj!.naziv;
       lokacijaController.text = widget.dogadjaj!.lokacija;
       //napomenaController.text = widget.dogadjaj!.napomena;
-      krajController.text =
-          widget.dogadjaj!.pocetak != null ? _formatDate(widget.dogadjaj!.kraj!) : '';
+      krajController.text = widget.dogadjaj!.pocetak != null
+          ? _formatDate(widget.dogadjaj!.kraj!)
+          : '';
       trajanjeController.text = widget.dogadjaj!.trajanje?.toString() ?? '';
-      pocetakController.text =
-          widget.dogadjaj!.pocetak != null ? _formatDate(widget.dogadjaj!.pocetak!) : '';
+      pocetakController.text = widget.dogadjaj!.pocetak != null
+          ? _formatDate(widget.dogadjaj!.pocetak!)
+          : '';
     }
-    
   }
-Future<void> _getpreselectedAgenda(int id)async{
-  try {
+
+  Future<void> _getpreselectedAgenda(int id) async {
+    try {
       Agenda fetchedAgenda = await AgendaProvider().getById(id);
       setState(() {
-        preselectedAgenda=fetchedAgenda;
+        preselectedAgenda = fetchedAgenda;
       });
     } catch (e) {
       print('Error fetching Agenda preselect: $e');
     }
-}
+  }
+
   Future<void> _fetchAgendaList() async {
     try {
       List<Agenda> fetchedAgendaList = await AgendaProvider().fetchAgendaList();
       setState(() {
-        agendaList=fetchedAgendaList;
+        agendaList = fetchedAgendaList;
       });
     } catch (e) {
       print('Error fetching Agenda list: $e');
@@ -69,27 +72,26 @@ Future<void> _getpreselectedAgenda(int id)async{
   Future<void> _insertDogadjaj() async {
     try {
       if (widget.dogadjaj != null) {
-        // Dogadjaj myDogadjaj = Dogadjaj(
-        //   widget.dogadjaj!.dogadjajId,
-        //   lokacijaController.text);
-        await DogadjajProvider().update(widget.dogadjaj!.dogadjajId,{ widget.dogadjaj!.dogadjajId,
-                    nazivController.text, 
-           int.parse(trajanjeController.text), 
-          _parseDate(pocetakController.text),  
+        await DogadjajProvider().update(widget.dogadjaj!.dogadjajId, {
+          widget.dogadjaj!.dogadjajId,
+          nazivController.text,
+          int.parse(trajanjeController.text),
+          _parseDate(pocetakController.text),
           _parseDate(krajController.text),
           ' ',
-          1,'Tribina'
-}
-          
-        );
+          1,
+          'Tribina'
+        });
       } else {
-        await DogadjajProvider().insert({nazivController.text, 
-           int.parse(trajanjeController.text), 
-_parseDate(pocetakController.text),  
-        _parseDate(krajController.text),
-                    ' ',
-           1, 
-           lokacijaController.text});
+        Dogadjaj insertObject=Dogadjaj();
+        insertObject.naziv = nazivController.text;
+      insertObject.trajanje = int.parse(trajanjeController.text);
+      insertObject.pocetak = _parseDate(pocetakController.text);
+      insertObject.napomena = ' ';
+      insertObject.agendaId = 1;
+      insertObject.lokacija = lokacijaController.text;
+
+        await DogadjajProvider().insert(insertObject);
       }
     } catch (e) {
       print('Error inserting/updating Dogadjaj data: $e');
@@ -112,21 +114,6 @@ _parseDate(pocetakController.text),
                 'Dogadjaj ID: ${widget.dogadjaj!.dogadjajId}',
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
-            // DropdownButton<Agenda>(
-            //   value: selectedAgenda,
-            //   items: agendaList.map((agenda) {
-            //     return DropdownMenuItem<Agenda>(
-            //       value: agenda,
-            //       child: Text(agenda.dan.toString()), 
-            //     );
-            //   }).toList(),
-            //   onChanged: (value) {
-            //     setState(() {
-            //       selectedAgenda = value;
-            //     });
-            //   },
-            //   hint: Text('Choose Agenda'),
-            // ),
             TextField(
               controller: nazivController,
               decoration: InputDecoration(labelText: 'Naziv'),
@@ -142,15 +129,11 @@ _parseDate(pocetakController.text),
             TextField(
               controller: pocetakController,
               decoration: InputDecoration(labelText: 'Pocetak'),
-            ), 
+            ),
             TextField(
               controller: krajController,
               decoration: InputDecoration(labelText: 'Kraj'),
             ),
-            //  TextField(
-            //   controller: napomenaController,
-            //   decoration: InputDecoration(labelText: 'Napomena'),
-            // ),
             SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
@@ -163,14 +146,16 @@ _parseDate(pocetakController.text),
       ),
     );
   }
-DateTime _parseDate(String dateString) {
-  try {
-    return DateFormat('dd-MM-yyyy').parse(dateString);
-  } catch (e) {
-    print('Error parsing date: $e');
-    throw Exception('Invalid date format');
+
+  DateTime _parseDate(String dateString) {
+    try {
+      return DateFormat('dd-MM-yyyy').parse(dateString);
+    } catch (e) {
+      print('Error parsing date: $e');
+      throw Exception('Invalid date format');
+    }
   }
-}
+
   String _formatDate(DateTime date) {
     return DateFormat('dd-MM-yyyy').format(date);
   }

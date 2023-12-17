@@ -8,11 +8,12 @@ class Komisija {
   late int kategorijaID;
   late int ulogaKomisijeID;
 
-  Komisija(this.komisijaID, this.ime, this.prezime, this.email, this.kategorijaID,
+  Komisija();
+  Komisija.full(this.komisijaID, this.ime, this.prezime, this.email, this.kategorijaID,
       this.ulogaKomisijeID);
 
   factory Komisija.fromJson(Map<String, dynamic> map) {
-    return Komisija(
+    return Komisija.full(
         map['komisijaID'],
         map['ime'],
         map['prezime'],

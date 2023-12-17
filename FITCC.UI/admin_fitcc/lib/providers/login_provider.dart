@@ -23,7 +23,7 @@ class LoginService {
         ((X509Certificate cert, String host, int port) => true);
 
     HttpClientRequest request =
-        await _client.postUrl(Uri.parse("http://10.0.2.2:5000/api/auth/login"));
+        await _client.postUrl(Uri.parse("https://localhost:5443/api/auth/login"));
     request.headers.set('Content-Type', 'application/json');
     request.add(utf8.encode(AuthRequest.loginToJson(authRequest)));
     HttpClientResponse result = await request.close();

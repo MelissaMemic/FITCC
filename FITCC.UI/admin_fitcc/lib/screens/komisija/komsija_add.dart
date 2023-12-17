@@ -1,4 +1,5 @@
 import 'package:admin_fitcc/models/komisija.dart';
+import 'package:admin_fitcc/providers/komisija_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:admin_fitcc/models/uloge_komisije.dart';
 import 'package:admin_fitcc/models/kategorija.dart';
@@ -37,7 +38,6 @@ class _KomisijaAddState extends State<KomisijaAdd> {
         ulogeKomisijeList = fetchedUlogeKomisijeList;
       });
     } catch (e) {
-      // Handle the error
       print('Error fetching UlogeKomisije data: $e');
     }
   }
@@ -50,27 +50,22 @@ class _KomisijaAddState extends State<KomisijaAdd> {
         kategorijeList = fetchedKategorijeList;
       });
     } catch (e) {
-      // Handle the error
       print('Error fetching Kategorije data: $e');
     }
   }
 
   Future<void> _insertKomisija() async {
     try {
-      // Implement the logic to insert the Komisija with the entered data
-      // You can access the entered values using imeController.text, prezimeController.text, etc.
-      // Make an API call to insert the Komisija
-      // For example:
-      // await KomisijaProvider().insertKomisija(Komisija(
-      //   ime: imeController.text,
-      //   prezime: prezimeController.text,
-      //   email: emailController.text,
-      //   ulogeKomisije: selectedUlogeKomisije,
-      //   kategorija: selectedKategorija,
-      // ));
-      // You may need to adjust this code based on your API and data model
-    } catch (e) {
-      // Handle the error
+              Komisija insertObject=Komisija();
+        insertObject.ime = imeController.text;
+      insertObject.prezime = prezimeController.text;
+      insertObject.email = emailController.text;
+      insertObject.kategorijaID = int.parse(selectedKategorija);
+      insertObject.ulogaKomisijeID = int.parse(selectedUlogeKomisije);
+
+        await KomisijaProvider().insert(insertObject);
+
+      } catch (e) {
       print('Error inserting Komisija data: $e');
     }
   }

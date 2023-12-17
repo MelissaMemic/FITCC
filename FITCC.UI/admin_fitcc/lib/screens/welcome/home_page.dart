@@ -22,16 +22,17 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter Desktop Menu'),
+        title: Text('FITCC Menu'),
       ),
       body: Center(
         child: Text(
-          'Welcome to the Homepage!',
+          'Welcome to the FITCC!',
           style: TextStyle(fontSize: 24),
         ),
       ),
@@ -52,6 +53,15 @@ class MyHomePage extends StatelessWidget {
               ),
             ),
             ListTile(
+              title: Text('Home'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MyHomePage()),
+                );
+              },
+            ),
+            ListTile(
               title: Text('Komisija'),
               onTap: () {
                 Navigator.push(
@@ -60,7 +70,7 @@ class MyHomePage extends StatelessWidget {
                 );
               },
             ),
-           ListTile(
+            ListTile(
               title: Text('Projekti'),
               onTap: () {
                 Navigator.push(
@@ -68,7 +78,8 @@ class MyHomePage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => ProjekatList()),
                 );
               },
-            ),ListTile(
+            ),
+            ListTile(
               title: Text('Agendum'),
               onTap: () {
                 Navigator.push(
@@ -76,21 +87,13 @@ class MyHomePage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => DogadjajList()),
                 );
               },
-            ),ListTile(
+            ),
+            ListTile(
               title: Text('Timovi'),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => TimList()),
-                );
-              },
-            ),
-            ListTile(
-              title: Text('Home'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MyHomePage()),
                 );
               },
             ),
@@ -103,7 +106,7 @@ class MyHomePage extends StatelessWidget {
                 );
               },
             ),
-             ListTile(
+            ListTile(
               title: Text('Rezultati'),
               onTap: () {
                 Navigator.push(
